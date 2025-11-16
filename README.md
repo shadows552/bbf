@@ -1,7 +1,5 @@
 # Blockchain-Based Product Provenance (BBF)
 
- **UW-Madison Badger Build Fest Hackathon Project**
-
 A production-grade, secure cloud-native dApp for tracking product lifecycle on Solana blockchain with enterprise-level security monitoring.
 
 ## Quick Start
