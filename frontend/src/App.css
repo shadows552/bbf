@@ -1,0 +1,142 @@
+.App {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.App-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.App-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.product-manager {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wallet-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.wallet-address {
+  color: white;
+  margin-top: 10px;
+  font-family: monospace;
+}
+
+.message {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: #10b981;
+  color: white;
+}
+
+.message.error {
+  background-color: #ef4444;
+  color: white;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.action-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-card h2 {
+  color: #667eea;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.action-card input,
+.action-card textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.action-card textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.action-card button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.action-card button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.action-card button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.history {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.history h3 {
+  color: #667eea;
+  margin-bottom: 15px;
+}
+
+.history-record {
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.history-record strong {
+  color: #667eea;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.history-record p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}

@@ -1,0 +1,51 @@
+# Environment variables - NEVER commit secrets!
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+target/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Solana
+test-ledger/
+keypairs/
+*.so
+
+# Docker
+.dockerignore
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Docker volumes & data
+loki-data/
+grafana-data/
+
+# Temporary files
+/tmp/

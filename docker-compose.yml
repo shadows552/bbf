@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bbf-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - SOLANA_NETWORK=devnet
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - ALLOWED_ORIGINS=http://localhost:8080
+      - LOKI_URL=http://loki:3100
+    depends_on:
+      - loki
+    networks:
+      - bbf-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bbf-frontend
+    ports:
+      - "8080:8080"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+      - VITE_SOLANA_NETWORK=devnet
+    depends_on:
+      - backend
+      - nginx-waf
+    networks:
+      - bbf-network
+
+  # NGINX with ModSecurity WAF
+  nginx-waf:
+    image: owasp/modsecurity-crs:nginx-alpine
+    container_name: bbf-nginx-waf
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/modsecurity.conf:/etc/modsecurity.d/modsecurity.conf:ro
+      - ./nginx/opa-policy.rego:/etc/nginx/opa-policy.rego:ro
+    depends_on:
+      - backend
+      - opa
+    networks:
+      - bbf-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Open Policy Agent (OPA)
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: bbf-opa
+    ports:
+      - "8181:8181"
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=info"
+      - "--log-format=json"
+      - "/policies"
+    volumes:
+      - ./opa/policies:/policies:ro
+    networks:
+      - bbf-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Loki for log aggregation
+  loki:
+    image: grafana/loki:2.9.3
+    container_name: bbf-loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    networks:
+      - bbf-network
+
+  # Promtail for shipping logs to Loki
+  promtail:
+    image: grafana/promtail:2.9.3
+    container_name: bbf-promtail
+    volumes:
+      - ./loki/promtail-config.yml:/etc/promtail/config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+    networks:
+      - bbf-network
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: bbf-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=http://localhost:3001
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - loki
+    networks:
+      - bbf-network
+
+  # Falco for runtime security monitoring
+  falco:
+    image: falcosecurity/falco-no-driver:latest
+    container_name: bbf-falco
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ./falco/falco.yaml:/etc/falco/falco.yaml:ro
+      - ./falco/rules:/etc/falco/rules.d:ro
+    environment:
+      - FALCO_BPF_PROBE=""
+    networks:
+      - bbf-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  bbf-network:
+    driver: bridge
+
+volumes:
+  loki-data:
+  grafana-data:
