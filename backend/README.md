@@ -4,7 +4,7 @@ REST API for interacting with the Solana product provenance program.
 
 ## Features
 
-- Structured JSON logging with Pino (for observability scorecard)
+- Structured JSON logging with Pino
 - Security headers with Helmet
 - Rate limiting
 - CORS protection

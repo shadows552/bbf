@@ -6,7 +6,7 @@ The BBF project is a production-grade, cloud-native dApp (Decentralized Applicat
 
 **Technology Stack**: Solana (Blockchain) | Node.js/Express (Backend) | React/Vite (Frontend) | Docker (Containerization) | NGINX/ModSecurity (Security) | Falco (Runtime Security) | OPA (Policy Engine) | Loki/Grafana (Observability)
 
-**Project Maturity**: Hackathon-grade with production security patterns
+**Project Maturity**: Production-grade with enterprise security patterns
 
 ---
 
@@ -444,7 +444,6 @@ VITE_SOLANA_NETWORK=devnet
 3. **Build Status Check** (build-status)
    - Depends on: Both previous jobs
    - Output: Summary report
-   - Score: "CI/CD Pipeline = 3/3"
 
 **Security Tools**:
 - **Trivy**: Container vulnerability scanning
@@ -463,7 +462,6 @@ VITE_SOLANA_NETWORK=devnet
 - Architecture diagram
 - Quick start guide
 - Technology stack summary
-- Hackathon scorecard (14/15)
 - Security demonstrations
 - Use cases
 - 947 total lines of project code
@@ -724,7 +722,6 @@ FROM nginx:alpine
 | **Security Layers** | 4 (WAF, OPA, Falco, NGINX) |
 | **CI/CD Jobs** | 3 |
 | **Monitoring Dashboards** | 2 |
-| **Hackathon Score** | 14/15 (93%) |
 
 ---
 
