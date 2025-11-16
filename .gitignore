@@ -2,6 +2,8 @@
 .env
 .env.local
 .env.*.local
+backend/.env
+frontend/.env
 
 # Node modules
 node_modules/
@@ -40,3 +42,10 @@ keypairs/
 # Coverage
 coverage/
 .nyc_output/
+
+# Docker volumes & data
+loki-data/
+grafana-data/
+
+# Temporary files
+/tmp/

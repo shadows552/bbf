@@ -1,0 +1,66 @@
+---
+# Falco configuration for runtime security monitoring
+
+rules_file:
+  - /etc/falco/falco_rules.yaml
+  - /etc/falco/falco_rules.local.yaml
+  - /etc/falco/rules.d
+
+# JSON output for structured logging
+json_output: true
+json_include_output_property: true
+json_include_tags_property: true
+
+# Log to stdout (will be captured by Docker logging)
+stdout_output:
+  enabled: true
+
+# Logging
+log_stderr: true
+log_syslog: false
+log_level: info
+
+# Priority threshold
+priority: debug
+
+# Buffering
+buffered_outputs: false
+
+# Output rate limiting
+outputs:
+  rate: 1
+  max_burst: 1000
+
+# Syscall event drops
+syscall_event_drops:
+  actions:
+    - log
+    - alert
+  rate: 0.03333
+  max_burst: 10
+
+# File output
+file_output:
+  enabled: false
+
+# Program output
+program_output:
+  enabled: false
+
+# HTTP output
+http_output:
+  enabled: false
+
+# gRPC output
+grpc:
+  enabled: false
+
+# Webserver
+webserver:
+  enabled: false
+
+# Container metadata
+metadata_download:
+  max_mb: 100
+  chunk_wait_us: 1000
+  watch_freq_sec: 1
